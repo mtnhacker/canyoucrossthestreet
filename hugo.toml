@@ -1,0 +1,40 @@
+baseURL = "https://canyoucrossthestreet.com/"
+locale = "en-US"
+title = "Can you cross the street?"
+theme = "crossing"
+enableRobotsTXT = true
+summaryLength = 40
+
+[pagination]
+pagerSize = 20
+
+[taxonomies]
+place = "places"
+
+[permalinks]
+[permalinks.page]
+posts = "/:slug/"
+
+[params]
+author = "Stormy"
+description = "A travel blog about how to have fun exploring the world — one photo at a time, with a soft spot for the small systems places run on."
+substackURL = "https://canyoucrossthestreet.substack.com"
+# canonicalMode: "substack" emits rel=canonical to the Substack original,
+# "self" emits rel=canonical to this site, "none" emits nothing.
+canonicalMode = "none"
+
+[markup]
+[markup.goldmark]
+[markup.goldmark.parser]
+wrapStandAloneImageWithinParagraph = false
+[markup.goldmark.renderer]
+unsafe = true
+
+[outputs]
+home = ["html", "rss"]
+section = ["html"]
+taxonomy = ["html"]
+term = ["html"]
+
+[sitemap]
+changefreq = "weekly"

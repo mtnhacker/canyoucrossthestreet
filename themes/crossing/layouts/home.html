@@ -1,0 +1,32 @@
+{{ define "main" }}
+<div class="wrap">
+  <section class="masthead">
+    <h1>{{ site.Title }}</h1>
+    <p class="tagline">{{ site.Params.description }}</p>
+  </section>
+  {{ $posts := where site.RegularPages "Section" "posts" }}
+  {{ $pag := .Paginate $posts }}
+  <div class="feed">
+    {{ range $pag.Pages }}
+    <article class="feed-item">
+      <a class="photo-link" href="{{ .RelPermalink }}" tabindex="-1" aria-hidden="true">
+        {{ partial "post-photo.html" (dict "page" . "kind" "feed") }}
+      </a>
+      <h2 class="q"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      {{ with .Summary | plainify }}<p class="excerpt">{{ . | truncate 180 }}</p>{{ end }}
+      <p class="meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        {{- $places := .GetTerms "places" }}{{ if $places }} &middot; {{ range $i, $t := $places }}{{ if $i }}, {{ end }}{{ $t.LinkTitle }}{{ end }}{{ end }}
+      </p>
+    </article>
+    {{ end }}
+  </div>
+  {{ if gt $pag.TotalPages 1 }}
+  <nav class="pagination" aria-label="Pagination">
+    {{ with $pag.Prev }}<a href="{{ .URL }}">Newer</a>{{ end }}
+    <span>Page {{ $pag.PageNumber }} of {{ $pag.TotalPages }}</span>
+    {{ with $pag.Next }}<a href="{{ .URL }}">Older</a>{{ end }}
+  </nav>
+  {{ end }}
+</div>
+{{ end }}

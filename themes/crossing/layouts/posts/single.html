@@ -1,0 +1,19 @@
+{{ define "main" }}
+<article class="post">
+  <div class="hero">
+    {{ partial "post-photo.html" (dict "page" . "kind" "hero") }}
+  </div>
+  <div class="wrap">
+    <h1 class="q">{{ .Title }}</h1>
+    <p class="meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+      {{- $places := .GetTerms "places" }}{{ if $places }} &middot; {{ range $i, $t := $places }}{{ if $i }}, {{ end }}{{ $t.LinkTitle }}{{ end }}{{ end }}
+    </p>
+    <div class="prose">
+      {{ .Content }}
+    </div>
+    {{ partial "substack-note.html" . }}
+    {{ partial "look-nav.html" . }}
+  </div>
+</article>
+{{ end }}

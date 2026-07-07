@@ -1,0 +1,12 @@
+{{/* Standing note at the end of every post. Edit the wording here, once. */}}
+<aside class="substack-note">
+  <p>
+    This post first went out by email.
+    {{ with .Params.substack_url -}}
+    Discussion lives <a href="{{ . }}">on the Substack post</a> &mdash; and you can
+    {{- else -}}
+    You can
+    {{- end }}
+    <a href="{{ site.Params.substackURL }}/subscribe">subscribe on Substack</a> to get the next one in your inbox.
+  </p>
+</aside>

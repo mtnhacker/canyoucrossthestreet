@@ -1,0 +1,7 @@
+name = "Crossing"
+license = "MIT"
+description = "A photo-first, serif-forward theme for Can you cross the street?"
+min_version = "0.146.0"
+
+[author]
+name = "Stormy"

@@ -1,0 +1,29 @@
+{{- $p := .page -}}
+{{- $kind := .kind | default "feed" -}}
+{{- $name := "" -}}
+{{- with $p.Params.images }}{{ $name = index . 0 }}{{ end -}}
+{{- $res := "" -}}
+{{- if $name }}{{ $res = $p.Resources.GetMatch $name }}{{ end -}}
+{{- if not $res }}{{ $res = index ($p.Resources.ByType "image") 0 }}{{ end -}}
+{{- if $res -}}
+{{- $alt := "" -}}
+{{- $altP := $p.Params.alt -}}
+{{- if reflect.IsMap $altP }}{{ $alt = index $altP ($name | default $res.Name) | default "" }}{{ else if reflect.IsSlice $altP }}{{ with index $altP 0 }}{{ $alt = . }}{{ end }}{{ else if $altP }}{{ $alt = $altP }}{{ end -}}
+{{- $isRaster := ne $res.MediaType.SubType "svg" -}}
+{{- $srcset := slice -}}
+{{- if $isRaster -}}
+{{- range $w := slice 720 1200 1600 -}}
+{{- if gt $res.Width $w -}}
+{{- $v := $res.Resize (printf "%dx" $w) -}}
+{{- $srcset = $srcset | append (printf "%s %dw" $v.RelPermalink $v.Width) -}}
+{{- end -}}
+{{- end -}}
+{{- $srcset = $srcset | append (printf "%s %dw" $res.RelPermalink $res.Width) -}}
+{{- end -}}
+<img class="post-photo post-photo--{{ $kind }}"
+  src="{{ $res.RelPermalink }}"
+  {{ if and $isRaster (gt (len $srcset) 1) }}srcset="{{ delimit $srcset ", " }}" sizes="(min-width: 78rem) 74rem, 100vw"{{ end }}
+  width="{{ $res.Width }}" height="{{ $res.Height }}"
+  alt="{{ $alt }}"
+  {{ if eq $kind "hero" }}fetchpriority="high"{{ else }}loading="lazy" decoding="async"{{ end }}>
+{{- end -}}

@@ -1,0 +1,11 @@
+{{ define "main" }}
+<div class="wrap">
+  <h1 class="q">{{ .Title }}</h1>
+  <p class="tagline">Every place a post has been tagged with.</p>
+  <ul class="places-list">
+    {{ range .Data.Terms.Alphabetical }}
+    <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a> <span class="count">{{ .Count }}</span></li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

@@ -1,0 +1,32 @@
+{{- $pages := where site.RegularPages "Section" "posts" -}}
+{{- $limit := site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 }}{{ $pages = $pages | first $limit }}{{ end -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>{{ site.Title }}</title>
+    <link>{{ site.Home.Permalink }}</link>
+    <description>{{ site.Params.description }}</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    {{ with index $pages.ByLastmod.Reverse 0 }}<lastBuildDate>{{ .Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{ with .OutputFormats.Get "rss" -}}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{ range $pages }}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ .Summary | plainify | html }}</description>
+      {{- $content := .Content | safeHTML -}}
+      {{- $base := strings.TrimSuffix "/" site.BaseURL -}}
+      {{- $content = replaceRE `\s+srcset="[^"]*"` "" $content -}}
+      {{- $content = replaceRE `\s+sizes="[^"]*"` "" $content -}}
+      {{- $content = replaceRE `(src|href)="(/[^"]*)"` (printf `$1="%s$2"` $base) $content }}
+      <content:encoded>{{ printf "<![CDATA[%s]]>" $content | safeHTML }}</content:encoded>
+    </item>
+    {{ end }}
+  </channel>
+</rss>

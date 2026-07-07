@@ -1,0 +1,26 @@
+{{- $res := .Page.Resources.GetMatch .Destination -}}
+{{- if $res -}}
+{{- $isRaster := ne $res.MediaType.SubType "svg" -}}
+{{- $srcset := slice -}}
+{{- if $isRaster -}}
+{{- range $w := slice 720 1200 -}}
+{{- if gt $res.Width $w -}}
+{{- $v := $res.Resize (printf "%dx" $w) -}}
+{{- $srcset = $srcset | append (printf "%s %dw" $v.RelPermalink $v.Width) -}}
+{{- end -}}
+{{- end -}}
+{{- $srcset = $srcset | append (printf "%s %dw" $res.RelPermalink $res.Width) -}}
+{{- end -}}
+<figure>
+  <img src="{{ $res.RelPermalink }}"
+    {{ if and $isRaster (gt (len $srcset) 1) }}srcset="{{ delimit $srcset ", " }}" sizes="(min-width: 48rem) 42rem, 100vw"{{ end }}
+    width="{{ $res.Width }}" height="{{ $res.Height }}"
+    alt="{{ .Text }}" loading="lazy" decoding="async">
+  {{ with .Title }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>
+{{- else -}}
+<figure>
+  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" loading="lazy" decoding="async">
+  {{ with .Title }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+</figure>
+{{- end -}}

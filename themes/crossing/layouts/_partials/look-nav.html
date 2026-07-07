@@ -1,0 +1,20 @@
+{{/* Signature element: prev/next styled like the "look left / look right"
+     instructions painted on the road at a crossing. */}}
+{{- $older := .PrevInSection -}}
+{{- $newer := .NextInSection -}}
+{{- if or $older $newer -}}
+<nav class="look-nav" aria-label="Adjacent posts">
+  {{ with $older -}}
+  <a class="look-nav__left" href="{{ .RelPermalink }}">
+    <span class="look-nav__cue" aria-hidden="true">&larr; look left</span>
+    <span class="look-nav__title">{{ .Title }}</span>
+  </a>
+  {{- else }}<span></span>{{ end }}
+  {{ with $newer -}}
+  <a class="look-nav__right" href="{{ .RelPermalink }}">
+    <span class="look-nav__cue" aria-hidden="true">look right &rarr;</span>
+    <span class="look-nav__title">{{ .Title }}</span>
+  </a>
+  {{- end }}
+</nav>
+{{- end -}}
