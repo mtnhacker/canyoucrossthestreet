@@ -29,7 +29,7 @@ import requests
 
 sys.path.insert(0, str(Path(__file__).parent))
 from convert_common import (clean_url, download_images, existing_guids,
-                            front_matter)
+                            front_matter, hero_caption)
 from substack_common import (convert_substack_html, parse_rss_date,
                              slug_from_substack_url)
 
@@ -75,6 +75,7 @@ def sync(feed_xml: str, content_dir: Path, image_pool: str | None = None) -> tup
             places_todo=True,
             substack_url=link,
             substack_guid=guid,
+            hero_caption=hero_caption(post),
         )
 
         bundle = content_dir / f"{date.strftime('%Y-%m-%d')}-{slug}"

@@ -166,7 +166,14 @@ h2.q { font-size: clamp(1.4rem, 3.5vw, 1.9rem); margin-block: 1rem 0.35rem; }
   height: auto;
   border-radius: 2px;
 }
-.post .hero { max-width: 74rem; margin-inline: auto; padding-inline: clamp(0rem, 2vw, 2rem); }
+.post .hero { max-width: 74rem; margin: 0 auto; padding-inline: clamp(0rem, 2vw, 2rem); }
+.post .hero figcaption {
+  color: var(--kerb);
+  font-size: 0.88rem;
+  font-style: italic;
+  margin-top: 0.5rem;
+  text-align: center;
+}
 .post .hero .post-photo { border-radius: 0; }
 @media (min-width: 48rem) {
   .post .hero .post-photo { border-radius: 3px; }

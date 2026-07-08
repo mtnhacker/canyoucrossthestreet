@@ -1,0 +1,46 @@
+name: Sync Substack
+
+on:
+  schedule:
+    - cron: "17 9 * * *"   # daily at 09:17 UTC — quiet hour, off-peak minute
+  workflow_dispatch: {}
+
+# never let two sync runs race each other
+concurrency:
+  group: substack-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Substack sync
+        id: sync
+        run: |
+          python scripts/sync_substack.py | tee /tmp/sync.log
+          titles=$(grep '^NEW: ' /tmp/sync.log | sed 's/^NEW: //' | paste -sd ', ' -)
+          echo "titles=${titles}" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push if anything changed
+        run: |
+          if [ -n "$(git status --porcelain content/posts)" ]; then
+            git config user.name "substack-sync[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add content/posts
+            git commit -m "sync: ${{ steps.sync.outputs.titles || 'new Substack post(s)' }}"
+            git push
+          else
+            echo "No new posts — nothing to commit."
+          fi

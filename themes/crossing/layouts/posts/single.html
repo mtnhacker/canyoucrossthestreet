@@ -1,8 +1,9 @@
 {{ define "main" }}
 <article class="post">
-  <div class="hero">
+  <figure class="hero">
     {{ partial "post-photo.html" (dict "page" . "kind" "hero") }}
-  </div>
+    {{ with .Params.hero_caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  </figure>
   <div class="wrap">
     <h1 class="q">{{ .Title }}</h1>
     <p class="meta">

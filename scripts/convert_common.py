@@ -258,13 +258,23 @@ def html_to_post(html: str, *, base_url: str = "",
 # bundle writing
 # --------------------------------------------------------------------------
 
+def hero_caption(post: ConvertedPost) -> str:
+    """Caption of the lead image, if it was lifted out of the body (so the
+    caption would otherwise be lost)."""
+    stills = [r for r in post.images if r.kind == "image"]
+    if stills and stills[0].caption and stills[0].local not in post.markdown:
+        return stills[0].caption
+    return ""
+
+
 def front_matter(*, title: str, date: str, slug: str, images: list[str],
                  alt: dict[str, str], places: list[str] | None = None,
                  aliases: list[str] | None = None,
                  substack_url: str | None = None,
                  substack_guid: str | None = None,
                  draft: bool = False,
-                 places_todo: bool = False) -> str:
+                 places_todo: bool = False,
+                 hero_caption: str = "") -> str:
     lines = ["---"]
     lines.append(f"title: {yaml_str(title)}")
     lines.append(f"date: {date}")
@@ -277,6 +287,8 @@ def front_matter(*, title: str, date: str, slug: str, images: list[str],
     if alt:
         lines.append("alt:")
         lines += [f"  {yaml_str(k)}: {yaml_str(v)}" for k, v in alt.items()]
+    if hero_caption:
+        lines.append(f"hero_caption: {yaml_str(hero_caption)}")
     if places:
         lines.append("places: [" + ", ".join(yaml_str(p) for p in places) + "]")
     elif places_todo:

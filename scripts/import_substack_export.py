@@ -26,7 +26,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from convert_common import download_images, existing_guids, front_matter, slugify
+from convert_common import (download_images, existing_guids, front_matter,
+                            hero_caption, slugify)
 from substack_common import convert_substack_html
 
 PUBLICATION = "https://canyoucrossthestreet.substack.com"
@@ -101,7 +102,7 @@ def main() -> int:
                 title=title, date=date.isoformat(), slug=slug,
                 images=[r.local for r in stills], alt=alt_map,
                 places_todo=True, substack_url=url, substack_guid=url,
-                draft=not published)
+                draft=not published, hero_caption=hero_caption(post))
 
             bundle = content_dir / f"{date.strftime('%Y-%m-%d')}-{slug}"
             tmp = bundle.with_name(bundle.name + ".tmp")
