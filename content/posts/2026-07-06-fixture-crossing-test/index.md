@@ -9,7 +9,7 @@ alt:
   "fixture-one.jpg": "A zebra crossing painted on a quiet street"
   "fixture-two.jpg": "A round plaza seen from above"
 hero_caption: "The crossing nobody uses, until everyone does."
-places: []  # TODO: tag this post, e.g. ["England", "Hadrian's Wall"]
+places: ["Fixtureland", "Test Valley"]
 substack_url: "https://canyoucrossthestreet.substack.com/p/fixture-crossing-test"
 substack_guid: "https://canyoucrossthestreet.substack.com/p/fixture-crossing-test"
 draft: true

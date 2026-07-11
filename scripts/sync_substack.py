@@ -64,13 +64,17 @@ def sync(feed_xml: str, content_dir: Path, image_pool: str | None = None) -> tup
         post = convert_substack_html(html)
         stills = [r for r in post.images if r.kind == "image"]
         alt_map = {r.local: (r.alt or r.caption or title) for r in stills}
+        # Substack post tags arrive as <category> elements; use them as places
+        places = [c.text.strip() for c in item.findall("category")
+                  if c.text and c.text.strip()]
         front = front_matter(
             title=title,
             date=date.isoformat(),
             slug=slug,
             images=[r.local for r in stills],
             alt=alt_map,
-            places_todo=True,
+            places=places or None,
+            places_todo=not places,
             substack_url=link,
             substack_guid=guid,
             hero_caption=hero_caption(post),
