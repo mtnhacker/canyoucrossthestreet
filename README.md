@@ -143,12 +143,30 @@ python3 scripts/import_substack_export.py --export substack-export.zip
 It shares the sync's conversion + GUID dedup code, so nothing gets imported
 twice no matter which path a post arrived by.
 
+## How the daily sync actually runs
+
+Substack's CDN blocks requests from GitHub's server IP ranges (the feed
+returns 403 no matter what the request looks like), so the daily sync runs
+**on the author's Mac** via launchd instead of in GitHub Actions:
+
+- `scripts/sync-local.sh` — pulls, runs the sync in a local venv, commits
+  as `sync: <post title(s)>`, and pushes (which triggers the deploy).
+- `scripts/com.canyoucrossthestreet.sync.plist` — launchd agent that runs
+  the script daily at 9:17 AM local time. If the Mac is asleep at that
+  moment, launchd runs it on the next wake. Install once with:
+
+  ```bash
+  cp scripts/com.canyoucrossthestreet.sync.plist ~/Library/LaunchAgents/
+  launchctl load ~/Library/LaunchAgents/com.canyoucrossthestreet.sync.plist
+  ```
+
+  Logs land in `/tmp/canyoucrossthestreet-sync.log`. To run a sync right
+  now: `bash scripts/sync-local.sh`.
+
 ## GitHub Actions
 
-- **`sync.yml`** — daily at 09:17 UTC and on manual dispatch
-  (Actions tab → *Sync Substack* → *Run workflow*). Runs the sync; if the
-  working tree changed, commits as `sync: <post title(s)>` and pushes. A
-  concurrency group prevents overlapping runs.
+- **`sync.yml`** — manual dispatch only (kept for debugging; it will 403
+  from GitHub's network — that's Substack's IP block, not a bug).
 - **`deploy.yml`** — on every push to `main`: installs pinned Hugo
   (extended 0.164.0), builds with `--minify`, runs the URL-preservation
   check as a gate, and deploys to GitHub Pages. `static/CNAME` carries the

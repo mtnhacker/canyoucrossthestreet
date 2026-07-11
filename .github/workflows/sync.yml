@@ -1,8 +1,10 @@
 name: Sync Substack
 
+# NOTE: Substack's CDN blocks GitHub-hosted runner IPs (403 on the feed),
+# so the daily schedule runs on the author's Mac instead — see
+# scripts/sync-local.sh and the README. Manual dispatch is kept for
+# debugging; expect it to fail with 403 from GitHub's network.
 on:
-  schedule:
-    - cron: "17 9 * * *"   # daily at 09:17 UTC — quiet hour, off-peak minute
   workflow_dispatch: {}
 
 # never let two sync runs race each other
