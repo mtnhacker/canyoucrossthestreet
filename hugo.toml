@@ -17,7 +17,7 @@ posts = "/:slug/"
 
 [params]
 author = "Stormy"
-description = "A travel blog about how to have fun exploring the world — one photo at a time, with a soft spot for the small systems places run on."
+description = "A travel blog about how to have fun exploring the world — one photo at a time, with a soft spot for how things work in local culture"
 substackURL = "https://canyoucrossthestreet.substack.com"
 # canonicalMode: "substack" emits rel=canonical to the Substack original,
 # "self" emits rel=canonical to this site, "none" emits nothing.
