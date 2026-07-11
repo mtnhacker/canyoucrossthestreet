@@ -6,11 +6,13 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-# self-contained python environment on first run
-if [ ! -d .venv ]; then
+# self-contained python environment; recreate it if the repo was moved
+# (venvs hardcode their creation path and break after a move)
+if ! ./.venv/bin/python -c 'pass' 2>/dev/null; then
+  rm -rf .venv
   python3 -m venv .venv
 fi
-./.venv/bin/pip install --quiet -r requirements.txt
+./.venv/bin/python -m pip install --quiet -r requirements.txt
 
 git pull --rebase --quiet
 

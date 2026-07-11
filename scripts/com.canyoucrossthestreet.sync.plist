@@ -7,7 +7,7 @@
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
-    <string>/Users/stormy/Downloads/canyoucrossthestreet/scripts/sync-local.sh</string>
+    <string>/Users/stormy/Sites/canyoucrossthestreet/scripts/sync-local.sh</string>
   </array>
   <key>StartCalendarInterval</key>
   <dict>

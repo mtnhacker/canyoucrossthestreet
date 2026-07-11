@@ -156,6 +156,7 @@ returns 403 no matter what the request looks like), so the daily sync runs
   moment, launchd runs it on the next wake. Install once with:
 
   ```bash
+  # (the repo must live at ~/Sites/canyoucrossthestreet — the plist hardcodes it)
   cp scripts/com.canyoucrossthestreet.sync.plist ~/Library/LaunchAgents/
   launchctl load ~/Library/LaunchAgents/com.canyoucrossthestreet.sync.plist
   ```
