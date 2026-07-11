@@ -25,8 +25,6 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-import requests
-
 sys.path.insert(0, str(Path(__file__).parent))
 from convert_common import (clean_url, download_images, existing_guids,
                             front_matter, hero_caption)
@@ -124,11 +122,8 @@ def main() -> int:
     if args.feed_file:
         feed_xml = Path(args.feed_file).read_text(encoding="utf-8")
     else:
-        from convert_common import USER_AGENT
-        resp = requests.get(args.feed_url, timeout=30, headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
-        })
+        from convert_common import http_get
+        resp = http_get(args.feed_url)
         resp.raise_for_status()
         feed_xml = resp.text
 

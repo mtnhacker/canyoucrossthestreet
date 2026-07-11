@@ -32,6 +32,28 @@ TRACKING_PARAMS = {
 }
 MORE_TOKEN = "@@HUGO-MORE-MARKER@@"
 
+BROWSER_HEADERS = {
+    "User-Agent": USER_AGENT,
+    "Accept": "*/*",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+
+
+def http_get(url: str, timeout: int = 30):
+    """GET that survives bot-blocking CDNs (Substack/Cloudflare).
+
+    Plain `requests` is blocked by TLS fingerprint on some CDNs regardless of
+    headers, so on 403 we retry with curl_cffi impersonating Chrome.
+    """
+    resp = requests.get(url, timeout=timeout, headers=BROWSER_HEADERS)
+    if resp.status_code == 403:
+        try:
+            from curl_cffi import requests as curl_requests
+        except ImportError:
+            return resp
+        resp = curl_requests.get(url, timeout=timeout, impersonate="chrome")
+    return resp
+
 
 # --------------------------------------------------------------------------
 # small utilities
@@ -310,20 +332,18 @@ def front_matter(*, title: str, date: str, slug: str, images: list[str],
 
 
 def download_images(refs: list[ImageRef], dest: Path,
-                    session: requests.Session | None = None) -> list[str]:
+                    session=None) -> list[str]:
     """Download every image into dest. Raises on the first failure so the
     caller can abandon the whole bundle (never commit a half-broken post)."""
-    session = session or requests.Session()
-    session.headers.setdefault("User-Agent", USER_AGENT)
     saved = []
     for ref in refs:
         target = dest / ref.local
         if target.exists():
             saved.append(ref.local)
             continue
-        resp = session.get(ref.url, timeout=30)
+        resp = http_get(ref.url)
         if resp.status_code == 404 and full_size_wp_url(ref.url) != ref.url:
-            resp = session.get(full_size_wp_url(ref.url), timeout=30)
+            resp = http_get(full_size_wp_url(ref.url))
         resp.raise_for_status()
         ctype = resp.headers.get("Content-Type", "")
         expected = "video/" if ref.kind == "video" else "image/"
