@@ -29,6 +29,7 @@ jobs:
       - name: Run Substack sync
         id: sync
         run: |
+          set -o pipefail   # a failing sync must fail the workflow, even piped through tee
           python scripts/sync_substack.py | tee /tmp/sync.log
           titles=$(grep '^NEW: ' /tmp/sync.log | sed 's/^NEW: //' | paste -sd ', ' -)
           echo "titles=${titles}" >> "$GITHUB_OUTPUT"

@@ -124,8 +124,11 @@ def main() -> int:
     if args.feed_file:
         feed_xml = Path(args.feed_file).read_text(encoding="utf-8")
     else:
-        resp = requests.get(args.feed_url, timeout=30,
-                            headers={"User-Agent": "canyoucrossthestreet-sync/1.0"})
+        from convert_common import USER_AGENT
+        resp = requests.get(args.feed_url, timeout=30, headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/rss+xml, application/xml;q=0.9, */*;q=0.8",
+        })
         resp.raise_for_status()
         feed_xml = resp.text
 

@@ -21,7 +21,9 @@ import requests
 from bs4 import BeautifulSoup, Comment, NavigableString
 from markdownify import MarkdownConverter
 
-USER_AGENT = "canyoucrossthestreet-sync/1.0 (+https://canyoucrossthestreet.com)"
+# Substack's CDN rejects non-browser user agents with 403, so look like one.
+USER_AGENT = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+              "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif", ".svg"}
 TRACKING_PARAMS = {
     "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
