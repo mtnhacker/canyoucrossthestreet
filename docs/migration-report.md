@@ -25,7 +25,7 @@ Migrated **25 published** posts and 6 drafts; 143 images referenced; 0 skipped.
 | Discover the secret to a vacation close to home | `content/posts/2014-12-23-discover-the-secret-to-a-vacation-close-to-home` | 7 |  |  |
 | The secret to getting lots of travel miles | `content/posts/2015-01-16-the-secret-to-getting-lots-of-travel-miles` | 1 |  |  |
 | Nine Lives: Death and Life in New Orleans | `content/posts/2015-01-18-nine-lives-death-and-life-in-new-orleans` | 2 |  |  |
-| What's the deal with Uber? | `content/posts/2015-09-10-whats-the-deal-with-uber` | 1 |  |  |
+| ~~What's the deal with Uber?~~ (removed post-migration at author's request; old URL /whats-the-deal-with-uber/ now 404s) | `content/posts/2015-09-10-whats-the-deal-with-uber` | 1 |  |  |
 | How to make $350 in 6 hours. Is it worth it? | `content/posts/2015-09-22-how-to-make-350-in-6-hours-is-it-worth-it` | 1 |  |  |
 | Berlin Street Art | `content/posts/2016-10-11-berlin-street-art` | 7 |  |  |
 | Why I love the Marigny and Bywater neighborhoods | `content/posts/2017-05-18-why-i-love-the-marigny-and-bywater-neighborhoods` | 14 |  |  |
@@ -56,7 +56,6 @@ Migrated **25 published** posts and 6 drafts; 143 images referenced; 0 skipped.
 | `/discover-the-secret-to-a-vacation-close-to-home/` | `/discover-the-secret-to-a-vacation-close-to-home/` | same |
 | `/the-secret-to-getting-lots-of-travel-miles/` | `/the-secret-to-getting-lots-of-travel-miles/` | same |
 | `/nine-lives-death-and-life-in-new-orleans/` | `/nine-lives-death-and-life-in-new-orleans/` | same |
-| `/whats-the-deal-with-uber/` | `/whats-the-deal-with-uber/` | same |
 | `/how-to-make-350-in-6-hours-is-it-worth-it/` | `/how-to-make-350-in-6-hours-is-it-worth-it/` | same |
 | `/berlin-street-art/` | `/berlin-street-art/` | same |
 | `/why-i-love-the-marigny-and-bywater-neighborhoods/` | `/why-i-love-the-marigny-and-bywater-neighborhoods/` | same |
